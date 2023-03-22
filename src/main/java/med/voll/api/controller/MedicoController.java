@@ -2,6 +2,7 @@ package med.voll.api.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jdk.jfr.Description;
 import med.voll.api.domain.medico.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ public class MedicoController {
     }
 
     @GetMapping
+    @Description(value = "So o teste")
     public ResponseEntity<Page<DadosListagemMedico>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
         var page = repository.findAllByAtivoTrue(paginacao)
                 .map(DadosListagemMedico::new);
