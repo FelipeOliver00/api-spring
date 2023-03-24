@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import med.voll.api.domain.consulta.AgendaDeConsultas;
@@ -23,6 +24,7 @@ public class ConsultaController {
 
     @PostMapping
     @Transactional
+    @Operation(summary = "Agenda um consulta com médico disponivel")
     public ResponseEntity agendar(@RequestBody @Valid DadosAgendamentoConsulta dados) {
         agenda.agendar(dados);
         return ResponseEntity.ok(new DadosDetalhamentoConsulta(null, dados.idMedico(), dados.idPaciente(), dados.data()));

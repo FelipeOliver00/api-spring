@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import med.voll.api.paciente.*;
@@ -22,6 +23,7 @@ public class PacienteController {
 
     @PostMapping
     @Transactional
+    @Operation(summary = "Cadastra um paciente")
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroPaciente dados, UriComponentsBuilder uriBuilder) {
         var paciente = new Paciente(dados);
         repository.save(paciente);
@@ -31,6 +33,7 @@ public class PacienteController {
     }
 
     @GetMapping
+    @Operation(summary = "Lista pacientes")
     public ResponseEntity<Page<DadosListagemPaciente>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemPaciente::new);
         return ResponseEntity.ok(page);
@@ -38,6 +41,7 @@ public class PacienteController {
 
     @PutMapping
     @Transactional
+    @Operation(summary = "Atualiza informações de um paciente")
     public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoPaciente dados) {
         var paciente = repository.getReferenceById(dados.id());
         paciente.atualizarInformacoes(dados);
@@ -47,6 +51,7 @@ public class PacienteController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @Operation(summary = "Exclui um paciente da base de dados")
     public ResponseEntity excluir(@PathVariable Long id) {
         var paciente = repository.getReferenceById(id);
         paciente.excluir();
@@ -55,6 +60,8 @@ public class PacienteController {
     }
 
     @GetMapping("/{id}")
+    @Transactional
+    @Operation(summary = "Lista um paciente pelo seu id")
     public ResponseEntity detalhar(@PathVariable Long id) {
         var paciente = repository.getReferenceById(id);
         return ResponseEntity.ok(new DadosDetalhamentoPaciente(paciente));
