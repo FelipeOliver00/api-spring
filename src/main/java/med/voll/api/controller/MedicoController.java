@@ -35,7 +35,7 @@ public class MedicoController {
     }
 
     @GetMapping
-    @Description(value = "So o teste")
+    @Description(value = "Listagem de Medicos por paginação default em 10 e ordenado por nome")
     @Operation(summary = "Lista médicos")
     public ResponseEntity<Page<DadosListagemMedico>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
         var page = repository.findAllByAtivoTrue(paginacao)
